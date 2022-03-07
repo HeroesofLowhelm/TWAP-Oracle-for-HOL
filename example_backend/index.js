@@ -6,8 +6,12 @@ const {Zilliqa} = require('@zilliqa-js/zilliqa');
 const {StatusType, MessageType} = require('@zilliqa-js/subscriptions');
 
 const {default: axios} = require("axios");
-const websocket = "wss://dev-ws.zilliqa.com"
-const zilliqa = new Zilliqa('https://dev-api.zilliqa.com');
+
+// const websocket = "wss://dev-ws.zilliqa.com"
+const websocket = "wss://api-ws.zilliqa.com"
+
+// const zilliqa = new Zilliqa('https://dev-api.zilliqa.com');
+const zilliqa = new Zilliqa('https://api.zilliqa.com');
 
 
 let holTWAP = 0;

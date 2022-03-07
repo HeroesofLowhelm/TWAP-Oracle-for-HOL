@@ -3,17 +3,24 @@ require('dotenv').config({path: __dirname + '/.env'})
 
 const {BN, Long, bytes, units} = require('@zilliqa-js/util');
 const {Zilliqa} = require('@zilliqa-js/zilliqa');
-const {StatusType, MessageType} = require('@zilliqa-js/subscriptions');
 const {
-    toBech32Address,
     getAddressFromPrivateKey,
 } = require('@zilliqa-js/crypto');
 
 const {default: axios} = require("axios");
-const websocket = "wss://dev-ws.zilliqa.com"
-const zilliqa = new Zilliqa('https://dev-api.zilliqa.com');
 
-const chainId = 333; // chainId of the developer testnet
+
+
+// const zilliqa = new Zilliqa('https://dev-api.zilliqa.com');
+const zilliqa = new Zilliqa('https://api.zilliqa.com');
+
+
+
+// const chainId = 333; // chainId of the developer testnet
+const chainId = 1; // chainId of the mainnet
+
+
+
 const msgVersion = 1; // current msgVersion
 const VERSION = bytes.pack(chainId, msgVersion);
 
