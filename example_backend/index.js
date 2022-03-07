@@ -10,7 +10,7 @@ const websocket = "wss://dev-ws.zilliqa.com"
 const zilliqa = new Zilliqa('https://dev-api.zilliqa.com');
 
 
-
+let holTWAP = 0;
 
 
 // Listen for events from a contract - errors aren't caught

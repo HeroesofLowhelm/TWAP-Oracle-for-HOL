@@ -46,42 +46,6 @@ async function initializeNetwork() {
 
 
 
-// Listen for events from a contract - errors aren't caught
-async function ListenForEvents(deployed_contract_base_16) {
-    console.log(deployed_contract_base_16);
-    const subscriber = zilliqa.subscriptionBuilder.buildEventLogSubscriptions(
-        websocket,
-        {
-            addresses: [
-                deployed_contract_base_16
-            ],
-        },
-    );
-
-    console.log("Listener started");
-
-    subscriber.emitter.on(MessageType.EVENT_LOG, async (event) => {
-        if (event["value"]) {
-            console.log("event emitted========>", JSON.stringify(event["value"]))
-            if (event["value"][0]["event_logs"] && event["value"][0]["event_logs"][0]) {
-                let eventObj = event["value"][0]["event_logs"][0];
-                console.log("event name==============>", eventObj["_eventname"]);
-                console.log("event param=============>", eventObj["params"]);
-            }
-        }
-    });
-
-    // subscriber.emitter.on(MessageType.NOTIFICATION, async (event) => {
-    //     console.log('get new Notifications: ', JSON.stringify(event)); // this will emit 2/3 times before event emitted
-    // });
-    // subscriber.emitter.on(MessageType.NEW_BLOCK, async (event) => {
-    //     console.log('New BLOCK=================>: ', JSON.stringify(event)); // this will emit 2/3 times before event emitted
-    // });
-
-    await subscriber.start();
-}
-
-
 async function processRequest () {
     let retries = 0
     while (retries < MAX_RETRIES) {
@@ -159,11 +123,6 @@ async function getTWAP() {
         await initializeNetwork();
     } catch (e) {
         console.log("err while initializing====>", e);
-    }
-    try {
-        await  ListenForEvents(process.env.TWAP_ORACLE_ADDRESS);
-    } catch (e) {
-        console.log("err while listening events", e)
     }
 
     setInterval(async () => {
