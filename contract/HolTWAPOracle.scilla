@@ -1,0 +1,68 @@
+(* SPDX-License-Identifier: MIT *)
+scilla_version 0
+
+(***************************************************)
+(*               Associated library                *)
+(***************************************************)
+import IntUtils
+
+library HolTWAPOracle
+(* Dummy user-defined ADT *)
+(* Error events *)
+type Error =
+| CodeIsOwner
+
+let make_error =
+    fun (result : Error) =>
+        let result_code = 
+        match result with
+        | CodeIsOwner               => Int32 -1
+        end
+        in
+        { _exception : "Error"; code : result_code }
+
+
+(***************************************************)
+(*             The contract definition             *)
+(***************************************************)
+contract HolTWAPOracle 
+(
+    contract_owner: ByStr20
+)
+
+(* Mutable fields *)
+field hol_twap: Uint256 = Uint256 0
+
+(**************************************)
+(*             Procedures             *)
+(**************************************)
+
+procedure ThrowError(error: Error)
+    e = make_error error;
+    throw e
+end
+
+procedure IsNotOwner(address: ByStr20)
+    is_owner = builtin eq contract_owner address;
+    match is_owner with
+    | False =>
+        err = CodeIsOwner;
+        ThrowError err
+    | True =>
+    end
+end
+
+
+(***************************************)
+(*             Transitions             *)
+(***************************************)
+
+
+(* @dev: Update TWAP of $HOL and saves it to the contract's mutable field called "twapHol". It only allows contract owner to invoke *)
+(* param twapHol:      TWAP of $Hol.                                                                                                *)
+transition updateTWAPPrice(twapHol: Uint256)
+    IsNotOwner _sender;
+    hol_twap := twapHol;
+    e = {_eventname: "UpdatedTWAPPrice"; holTWAP: twapHol};
+    event e
+end
