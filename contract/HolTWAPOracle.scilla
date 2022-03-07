@@ -31,7 +31,7 @@ contract HolTWAPOracle
 )
 
 (* Mutable fields *)
-field hol_twap: Uint256 = Uint256 0
+field hol_twap: String = ""
 
 (**************************************)
 (*             Procedures             *)
@@ -60,7 +60,7 @@ end
 
 (* @dev: Update TWAP of $HOL and saves it to the contract's mutable field called "twapHol". It only allows contract owner to invoke *)
 (* param twapHol:      TWAP of $Hol.                                                                                                *)
-transition updateTWAPPrice(twapHol: Uint256)
+transition updateTWAPPrice(twapHol: String)
     IsNotOwner _sender;
     hol_twap := twapHol;
     e = {_eventname: "UpdatedTWAPPrice"; holTWAP: twapHol};

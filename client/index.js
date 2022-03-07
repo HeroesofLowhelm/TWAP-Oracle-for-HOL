@@ -64,7 +64,6 @@ async function processRequest () {
 }
 
 async function setTWAPPrice (holTWAP) {
-    console.log("setting TWAP price===========>");
     try {
         const twapOracleContract = zilliqa.contracts.at(process.env.TWAP_ORACLE_ADDRESS);
         const callTx = await twapOracleContract.callWithoutConfirm(
@@ -72,8 +71,8 @@ async function setTWAPPrice (holTWAP) {
             [
                 {
                     vname: 'twapHol',
-                    type: 'Uint256',
-                    value: holTWAP * (10 ** 20) + '',
+                    type: 'String',
+                    value: holTWAP + '',
                 }
             ],
             {
@@ -85,9 +84,7 @@ async function setTWAPPrice (holTWAP) {
             },
             false,
         );
-        console.log("setting TWAP price step 2===========>", callTx.id);
         const confirmedTxn = await callTx.confirm(callTx.id);
-        console.log("setting TWAP price step 3===========>", confirmedTxn.receipt);
         if (confirmedTxn.receipt.success === true) {
             console.log("===============================Transaction Success===================================");
         }

@@ -28,12 +28,15 @@ async function ListenForEvents(deployed_contract_base_16) {
     console.log("Listener started");
 
     subscriber.emitter.on(MessageType.EVENT_LOG, async (event) => {
-        console.log("event emitted====>", JSON.stringify(event))
         if (event["value"]) {
-            console.log("event has value========>", JSON.stringify(event["value"]));
             if (event["value"][0]["event_logs"] && event["value"][0]["event_logs"][0]) {
                 let eventObj = event["value"][0]["event_logs"][0];
                 console.log("event name==============>", eventObj["_eventname"]);
+                if (eventObj["_eventname"] == "UpdatedTWAPPrice") {
+                    console.log("===================Updated $HOL TWAP===============================");
+                    holTWAP = eventObj["params"][0]["value"];
+                    console.log("Updated $HOL TWAP is", holTWAP);
+                }
             }
         }
     });
